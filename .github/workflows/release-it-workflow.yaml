@@ -27,7 +27,8 @@ jobs:
       -
         name: Release-it
         run: |
-          git config --global --add safe.directory /github/workspace
+          set -e
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config --global user.name github-actions[bot]
           release-it --ci --config /.release-it.json --changelog | tee $GITHUB_STEP_SUMMARY
@@ -49,7 +50,8 @@ jobs:
       -
         name: Release-it
         run: |
-          git config --global --add safe.directory /github/workspace
+          set -e
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config --global user.name github-actions[bot]
           release-it --ci --config /.release-it.json | tee $GITHUB_STEP_SUMMARY
