@@ -12,9 +12,33 @@ on:
         default: refs/heads/main
         required: false
         type: string
+      dry-run:
+        description: Whether to include a dry-run of release-it
+        # By default, dry-run in contexts other than the main branch
+        default: ${{ github.ref != inputs.default-branch }}
+        required: false
+        type: boolean
+      real-run:
+        description: Whether to include a (not dry-run) run of release-it
+        # By default, run release-it in contexts for the main branch
+        default: ${{ github.ref == inputs.default-branch }}
+        required: false
+        type: boolean
+      release-it-config:
+        description: The path to the release-it config file
+        # By default, use the image baked-in config file
+        default: /.release-it.json
+        required: false
+        type: string
+      release-it-extra-args:
+        description: Arbitrary extra args to provide to release-it CLI calls
+        default: ''
+        required: false
+        type: string
 jobs:
   release-it-dry-run:
     name: Release-it dry-run
+    if: ${{ inputs.dry-run }}
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.release-it-image }}
@@ -31,7 +55,12 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config --global user.name github-actions[bot]
-          release-it --ci --config /.release-it.json --changelog | tee $GITHUB_STEP_SUMMARY
+          release-it \
+            --ci \
+            --changelog \
+            --config ${{ inputs.release-it-config }} \
+            ${{ inputs.release-it-extra-args }} \
+            | tee $GITHUB_STEP_SUMMARY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-it:
@@ -39,8 +68,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-    # Run full release process for pushes to main
-    if: ${{ github.ref == inputs.default-branch }}
+    if: ${{ inputs.real-run }}
     steps:
       -
         name: Checkout
@@ -54,6 +82,10 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config --global user.name github-actions[bot]
-          release-it --ci --config /.release-it.json | tee $GITHUB_STEP_SUMMARY
+          release-it \
+            --ci \
+            --config ${{ inputs.release-it-config }} \
+            ${{ inputs.release-it-extra-args }} \
+            | tee $GITHUB_STEP_SUMMARY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
