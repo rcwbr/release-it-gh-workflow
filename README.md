@@ -11,7 +11,9 @@ name: Push workflow
 on: push
 jobs:
   release-it-workflow:
-    uses: rcwbr/release-it-gh-workflow.github/workflows/release-it-workflow.yaml@0.1.0
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.1.0
+    permissions:
+      contents: write
 ```
 
 ### Usage with protected branches
@@ -32,10 +34,18 @@ With [rulesets](https://docs.github.com/en/repositories/configuring-branches-and
 1. Choose Add environment secret, and paste the App private key .pem file contents generated earlier as the secret value
 1. Copy the secret name; this must be provided as the `app-secret-name` input to the workflow
 
+Once the app is configured and inputs provided, it replaces the need for granting `contents: write` permissions to the workflow. An example workflow configuration for this use-case:
 
-
-
-
+```yaml
+on: push
+jobs:
+  release-it-workflow:
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.1.0
+    with:
+      app-id: 1033419 # release-it-docker CI release-it app
+      app-environment: Repo release
+      app-secret-name: RELEASE_IT_GITHUB_APP_KEY # Secret belonging to the Repo release environment
+```
 
 ### Core action
 
