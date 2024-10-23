@@ -15,13 +15,13 @@ on:
       dry-run:
         description: Whether to include a dry-run of release-it
         # By default, dry-run in contexts other than the main branch
-        default: ${{ github.ref != inputs.default-branch }}
+        default: ${{ github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) }}
         required: false
         type: boolean
       release:
         description: Whether to include a (not dry-run) run of release-it
         # By default, run release-it in contexts for the main branch
-        default: ${{ github.ref == inputs.default-branch }}
+        default: ${{ github.ref == inputs.default-branch || github.ref == format('refs/heads/{0}', inputs.default-branch) }}
         required: false
         type: boolean
       release-it-config:
