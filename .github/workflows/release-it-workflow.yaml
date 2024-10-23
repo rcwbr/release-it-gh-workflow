@@ -84,7 +84,7 @@ jobs:
         name: Authenticate as app
         id: app-token
         if: ${{ inputs.app-id != '' }}
-        uses: create-github-app-token@v1.11.0
+        uses: actions/create-github-app-token@v1.11.0
         with:
           app-id: ${{ inputs.app-id }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
