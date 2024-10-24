@@ -15,7 +15,8 @@ on:
       dry-run:
         description: Whether to include a dry-run of release-it
         # By default, dry-run in contexts other than the main branch
-        default: ${{ github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) }}
+        # default: ${{ github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) }}
+        default: ${{ github.ref == inputs.default-branch }}
         required: false
         type: boolean
       release:
@@ -80,8 +81,7 @@ jobs:
   release-it:
     name: Release-it
     runs-on: ubuntu-24.04
-    # if: ${{ inputs.release }} TODO restore
-    if: ${{ github.ref == inputs.default-branch }}
+    if: ${{ inputs.release }}
     environment: ${{ inputs.app-environment }}
     steps:
       -
