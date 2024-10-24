@@ -80,7 +80,8 @@ jobs:
   release-it:
     name: Release-it
     runs-on: ubuntu-24.04
-    if: ${{ inputs.release }}
+    # if: ${{ inputs.release }} TODO restore
+    if: ${{ github.ref == inputs.default-branch }}
     environment: ${{ inputs.app-environment }}
     steps:
       -
