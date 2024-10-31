@@ -118,3 +118,8 @@ By default, the workflow for a PR defines a [job summary](https://github.blog/ne
 
 By default, the release-it configuration used by the workflow (see [Usage with local release-it config](#usage-with-local-release-it-config)) generates a [GitHub release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) on PR merge to the default branch. These can be found in the repo's Release or Tags pages.
 
+## Contributing
+
+### CI/CD
+
+This repo uses the reusable workflow it defines to release itself. This is specified via the `.github/workflows/.self-push-workflow.yaml` file.
