@@ -1,0 +1,10 @@
+# This workflow is for use in releasing this repo, and not meant for reuse elsewhere
+
+name: Push workflow
+on: push
+jobs:
+  release-it-workflow:
+    permissions:
+      contents: write
+    # Use a local reference to the workflow file to use version defined by the repo state
+    uses: ./.github/workflows/release-it-workflow.yaml
