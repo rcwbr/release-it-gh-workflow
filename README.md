@@ -215,7 +215,7 @@ rulesets:
       - type: required_status_checks
         parameters:
           required_status_checks:
-            - context: Release-it workflow / Release-it dry-run
+            - context: release-it workflow / Release-it dry-run
               integration_id: 15368 # GitHub Actions integration ID
           # Requires PR branches to be up-to-date with target
           strict_required_status_checks_policy: true
