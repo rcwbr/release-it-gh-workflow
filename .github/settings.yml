@@ -1,6 +1,6 @@
 repository:
   name: release-it-gh-workflow
-  description: Reusable GitHub Actions workflow for [release-it](https://github.com/release-it/release-it)
+  description: Reusable GitHub Actions workflow for release-it (https://github.com/release-it/release-it)
   default_branch: main
 
   # Prevent strategies other than basic merge, as they interfere with conventional changelog version inference
