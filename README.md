@@ -173,6 +173,27 @@ environments:
 
 > :warning: Note that an environment configured as code as above will not be provisioned until pushed to the repo default branch. An initial merge will fail to release as the App secret must be manually applied to the environment after merging. However, the release workflow may be retried once all configuration is in place, and should then succeed.
 
+### Protected branches settings-as-code usage
+
+If combining protected branches with the [file bumper](https://github.com/rcwbr/release-it-docker#file-bumper-image-usage) release model, the settings must configure the release-it GitHub App (as created under [Usage with protected tags](#usage-with-protected-tags)) to bypass the default branch protection. Apply this under the default branch protection settings:
+
+```yaml
+rulesets:
+  ...
+  - name: Default branch rules
+    target: branch
+    conditions:
+      ref_name:
+        include:
+          - "~DEFAULT_BRANCH"
+        exclude: []
+    ... # Add the following block, with the appropriate actor ID:
+    bypass_actors:
+      - actor_id: 1049549 # release-it-gh-workflow release-it app
+        actor_type: Integration
+        bypass_mode: always
+```
+
 ### Required checks settings-as-code usage
 
 To require successful workflow release-it dry-runs on PRs, branch protections and required checks may be configured via [Probot settings as code](https://github.com/repository-settings/app).
