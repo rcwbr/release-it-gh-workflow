@@ -13,7 +13,7 @@ name: Push workflow
 on: push
 jobs:
   release-it-workflow:
-    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.3
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.4
 ```
 
 ### Inputs usage
@@ -38,7 +38,7 @@ Many release-it configurations (including those used by default in the workflow,
 ```yaml
 jobs:
   release-it-workflow:
-    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.3
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.4
     permissions:
       contents: write
 ```
@@ -50,7 +50,7 @@ By default, the workflow uses [release-it configuration](https://github.com/rele
 ```yaml
 jobs:
   release-it-workflow:
-    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.3
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.4
     with:
       release-it-config: ./.release-it.json
 ```
@@ -118,7 +118,7 @@ Once the app is configured and inputs provided, it replaces the need for grantin
 on: push
 jobs:
   release-it-workflow:
-    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.3
+    uses: rcwbr/release-it-gh-workflow/.github/workflows/release-it-workflow.yaml@0.2.4
     with:
       app-id: 1049549 # release-it-gh-workflow release-it app
       app-environment: Repo release
