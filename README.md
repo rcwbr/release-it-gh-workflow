@@ -24,6 +24,7 @@ jobs:
 | `always-release` | &cross; | `false` | boolean | Whether to include a (not dry-run) run of release-it even on non-default branches |
 | `app-id` | &cross; | `''` | string | GitHub App ID to act as, if using |
 | `app-environment` | &cross; | `''` | string | Name of the GitHub environment that defines the `app-secret-name`, if stored within an environment |
+| `artifact-name` | &cross; | `''` | string | Name of a GitHub Actions artifact to download (generally for assets) |
 | `default-branch` | &cross; | `refs/heads/main` | string | The branch from which to release on commit |
 | `release-it-config` | &cross; | `/.release-it.json` | string | The path to the release-it config file |
 | `release-it-extra-args` | &cross; | `''` | string | Arbitrary extra args to provide to release-it CLI calls |
