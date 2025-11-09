@@ -1,5 +1,8 @@
 # release-it-gh-workflow
 
+[![GitHub Release](https://img.shields.io/github/v/release/rcwbr/release-it-gh-workflow?logo=semver&style=flat-square)](https://github.com/rcwbr/release-it-gh-workflow/releases/latest)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/rcwbr/release-it-gh-workflow/.self-push-workflow.yaml?logo=github&style=flat-square)](https://github.com/rcwbr/release-it-gh-workflow/actions/workflows/.self-push-workflow.yaml?query=branch%3Amain)
+
 Reusable GitHub Actions workflow for [release-it](https://github.com/release-it/release-it)
 
 <img width="849" alt="Screen Shot 2024-10-30 at 18 02 35" src="https://github.com/user-attachments/assets/771570ab-3f13-402a-9aee-df956c870db4">
@@ -24,6 +27,7 @@ jobs:
 | `always-release` | &cross; | `false` | boolean | Whether to include a (not dry-run) run of release-it even on non-default branches |
 | `app-id` | &cross; | `''` | string | GitHub App ID to act as, if using |
 | `app-environment` | &cross; | `''` | string | Name of the GitHub environment that defines the `app-secret-name`, if stored within an environment |
+| `artifact-name` | &cross; | `''` | string | Name of a GitHub Actions artifact to download (generally for assets) |
 | `default-branch` | &cross; | `refs/heads/main` | string | The branch from which to release on commit |
 | `release-it-config` | &cross; | `/.release-it.json` | string | The path to the release-it config file |
 | `release-it-extra-args` | &cross; | `''` | string | Arbitrary extra args to provide to release-it CLI calls |

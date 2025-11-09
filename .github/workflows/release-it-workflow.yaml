@@ -21,6 +21,11 @@ on:
         default: ''
         required: false
         type: string
+      artifact-name:
+        description: Name of a GitHub Actions artifact to download (generally for assets)
+        default: ''
+        required: false
+        type: string
       default-branch:
         description: The branch from which to release on commit
         default: refs/heads/main
@@ -63,6 +68,12 @@ jobs:
           # Needed for pull_request workflow types
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
       -
+        name: Download artifact
+        if: ${{ inputs.artifact-name != '' }}
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: ${{ inputs.artifact-name }}
+      -
         name: Release-it
         shell: bash
         run: |
@@ -102,6 +113,12 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ inputs.app-id != '' && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+      -
+        name: Download artifact
+        if: ${{ inputs.artifact-name != '' }}
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: ${{ inputs.artifact-name }}
       -
         name: Release-it
         shell: bash
