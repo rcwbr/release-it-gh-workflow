@@ -59,6 +59,11 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.release-it-image }}
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       -
         name: Checkout
@@ -97,6 +102,11 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.release-it-image }}
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     environment: ${{ inputs.app-environment }}
     steps:
       -
