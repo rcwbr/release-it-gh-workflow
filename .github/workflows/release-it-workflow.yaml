@@ -71,7 +71,7 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.workspace }}
-    environment: "${{ matrix.release && inputs.app-environment : '' }}"
+    environment: "${{ matrix.release && inputs.app-environment || '' }}"
     steps:
       -
         name: Authenticate as app
