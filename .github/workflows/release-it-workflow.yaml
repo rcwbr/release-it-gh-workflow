@@ -57,7 +57,7 @@ jobs:
       matrix:
         dry-run:
           # By default, dry-run in contexts other than the main branch or tags
-          - ${{ inputs.always-dry-run || ( github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) && github.ref_type != 'tag' }}
+          - ${{ inputs.always-dry-run || ( github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) && github.ref_type != 'tag' ) }}
         release:
           # By default, run release-it in contexts for the main branch
           # Skip if the commit pattern is "release: ", per https://github.com/rcwbr/release-it-docker/blob/485ec351cb07c71d39480d2fb03f529d77789067/base/.release-it.json#L4
