@@ -61,7 +61,7 @@ jobs:
         release:
           # By default, run release-it in contexts for the main branch
           # Skip if the commit pattern is "release: ", per https://github.com/rcwbr/release-it-docker/blob/485ec351cb07c71d39480d2fb03f529d77789067/base/.release-it.json#L4
-          - ${{ !startsWith(github.event.head_commit.message, 'release: ') && ( inputs.always-release || github.ref == inputs.default-branch || github.ref == format('refs/heads/{0}', inputs.default-branch) ) }}
+          - "${{ !startsWith(github.event.head_commit.message, 'release: ') && ( inputs.always-release || github.ref == inputs.default-branch || github.ref == format('refs/heads/{0}', inputs.default-branch) ) }}"
     name: Release-it${{ matrix.dry-run && ' dry-run' || '' }}
     runs-on: ubuntu-24.04
     container:
