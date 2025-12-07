@@ -93,7 +93,7 @@ jobs:
         with:
           fetch-depth: 0
           # Needed for pull_request workflow types
-          ref: ${{ ( !matrix.mode == 'release' && github.event_name == 'pull_request' ) && github.head_ref || github.ref }}
+          ref: ${{ ( matrix.mode != 'release' && github.event_name == 'pull_request' ) && github.head_ref || github.ref }}
           token: ${{ ( matrix.mode == 'release' && inputs.app-id != '' ) && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
       -
         name: Download artifact
