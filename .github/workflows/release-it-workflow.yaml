@@ -55,23 +55,19 @@ jobs:
   release-it:
     strategy:
       matrix:
-        # Matrix of condition, false for each to achieve one job per condition (using excludes below)
-        dry-run:
-          # By default, dry-run in contexts other than the main branch or tags
-          - ${{ inputs.always-dry-run || ( github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) && github.ref_type != 'tag' ) }}
-          - false
-        release:
+        # Start from list of all modes
+        mode:
+          - dry-run
+          - release
+        # Exclude modes from run based on inputs and context
+        exclude:
+          # Exclude dry-run unless conditions met
+          - mode: "${{ ( inputs.always-dry-run || ( github.ref != inputs.default-branch && github.ref != format('refs/heads/{0}', inputs.default-branch) && github.ref_type != 'tag' ) ) && 'none' || 'dry-run' }}"
+          # Exclude release unless conditions met
           # By default, run release-it in contexts for the main branch
           # Skip if the commit pattern is "release: ", per https://github.com/rcwbr/release-it-docker/blob/485ec351cb07c71d39480d2fb03f529d77789067/base/.release-it.json#L4
-          - "${{ !startsWith(github.event.head_commit.message, 'release: ') && ( inputs.always-release || github.ref == inputs.default-branch || github.ref == format('refs/heads/{0}', inputs.default-branch) ) }}"
-          - false
-        exclude:
-          # Only run jobs with exactly one condition true
-          - dry-run: false
-            release: false
-          - dry-run: true
-            release: true
-    name: Release-it${{ matrix.dry-run && ' dry-run' || '' }}${{ matrix.release && ' release' || '' }}
+          - mode: "${{ ( !startsWith(github.event.head_commit.message, 'release: ') && ( inputs.always-release || github.ref == inputs.default-branch || github.ref == format('refs/heads/{0}', inputs.default-branch) ) ) && 'none' || 'release' }}"
+    name: Release-it${{ matrix.mode == 'dry-run' && ' dry-run' || '' }}${{ matrix.mode == 'release' && ' release' || '' }}
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.release-it-image }}
@@ -80,12 +76,12 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.workspace }}
-    environment: "${{ matrix.release && inputs.app-environment || '' }}"
+    environment: "${{ matrix.mode == 'release' && inputs.app-environment || '' }}"
     steps:
       -
         name: Authenticate as app
         id: app-token
-        if: ${{ matrix.release && inputs.app-id != '' }}
+        if: ${{ matrix.mode == 'release' && inputs.app-id != '' }}
         uses: actions/create-github-app-token@v2.2.1
         with:
           app-id: ${{ inputs.app-id }}
@@ -96,8 +92,8 @@ jobs:
         with:
           fetch-depth: 0
           # Needed for pull_request workflow types
-          ref: ${{ ( !matrix.release && github.event_name == 'pull_request' ) && github.head_ref || github.ref }}
-          token: ${{ ( matrix.release && inputs.app-id != '' ) && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          ref: ${{ ( !matrix.mode == 'release' && github.event_name == 'pull_request' ) && github.head_ref || github.ref }}
+          token: ${{ ( matrix.mode == 'release' && inputs.app-id != '' ) && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
       -
         name: Download artifact
         if: ${{ inputs.artifact-name != '' }}
@@ -115,10 +111,10 @@ jobs:
           git config --global user.name github-actions[bot]
           release-it \
             --ci \
-            ${{ matrix.dry-run && '--changelog' || '' }} \
+            ${{ matrix.mode == 'dry-run' && '--changelog' || '' }} \
             --config ${{ inputs.release-it-config }} \
             ${{ inputs.release-it-extra-args }} \
             | tee $GITHUB_STEP_SUMMARY
         env:
           # Default to authenticating using the workflow GITHUB_TOKEN
-          GITHUB_TOKEN: ${{ ( matrix.release && inputs.app-id != '' ) && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ ( matrix.mode == 'release' && inputs.app-id != '' ) && steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
